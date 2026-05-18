@@ -107,6 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (modalStep < modalSteps.length - 1) {
                 updateModalStep(modalStep + 1);
             } else {
+                // Collect form data and send to WhatsApp
+                const perfil = document.querySelector('.modal-body-step:nth-child(1) .choice.is-selected .nm');
+                const operacoes = Array.from(document.querySelectorAll('.modal-body-step:nth-child(2) .choice.is-selected .nm')).map(el => el.textContent);
+                const nome = document.getElementById('lead-nome')?.value || '';
+                const email = document.getElementById('lead-email')?.value || '';
+
+                let msg = `Olá, vim pelo site da Suppra Foods.\n`;
+                if (perfil) msg += `Perfil: ${perfil.textContent}\n`;
+                if (operacoes.length) msg += `Operação: ${operacoes.join(', ')}\n`;
+                if (nome) msg += `Nome: ${nome}\n`;
+                if (email) msg += `E-mail: ${email}\n`;
+
+                const waUrl = `https://wa.me/556236383994?text=${encodeURIComponent(msg)}`;
+                window.open(waUrl, '_blank');
+
                 // Show success state
                 document.querySelector('.modal-form-content').style.display = 'none';
                 document.querySelector('.success-state').style.display = 'block';
